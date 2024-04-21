@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  # Сервіс для FastAPI
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+      - cloudinary
+
+  # Сервіс для PostgreSQL бази даних
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: usernamepostgres
+      POSTGRES_PASSWORD: Homework11
+      POSTGRES_DB: contacts
+    ports:
+      - "5433:5433"
+    volumes:
+      - database-data:/var/lib/postgresql/data
+
+  # Сервіс для Cloudinary
+  cloudinary:
+    image: cloudinary/cloudinary-local
+    environment:
+      - CLOUDINARY_CLOUD_NAME=your_cloud_name
+      - CLOUDINARY_API_KEY=your_api_key
+      - CLOUDINARY_API_SECRET=your_api_secret
+
+volumes:
+  database-data:
